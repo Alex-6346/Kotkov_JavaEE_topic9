@@ -1,0 +1,28 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>List of books</title>
+</head>
+<body>
+
+<form action="/book/create" method="get">
+    <button type="submit">Return </button>
+</form>
+
+  <table>
+    <thead class="thead-dark">
+    <tr>
+        <th scope="col"> ISBN </th>
+        <th scope="col"> Title </th>
+        <th scope="col"> Author </th>
+    </tr>
+    </thead>
+    <tr th:each="book : ${books}">
+        <td><span th:text="${book.isbn}"> ISBN </span></td>
+        <td><span th:text="${book.title}"> Title </span></td>
+        <td><span th:text="${book.author}"> Author </span></td>
+    </tr>
+  </table>
+
+</body>
+
+</html>
