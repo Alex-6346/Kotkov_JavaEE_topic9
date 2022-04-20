@@ -1,6 +1,10 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.BookDto;
+import com.example.demo.repository.BookRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,40 +16,32 @@ import java.util.ArrayList;
 @RequestMapping("/book")
 public class BookController {
 
-    ArrayList<BookDto> books = new ArrayList<BookDto>();
-
-    @RequestMapping(value ="/save", method=RequestMethod.POST)
-    @ResponseBody
-    public String saveBook(@RequestBody  BookDto bookDto){
-        books.add(bookDto);
-        System.out.println("added!");
-        return "{\"message\": \"OK\"}";
-    }
+    @Autowired
+    private BookRepository bookRepository = new BookRepository();
 
 
     @GetMapping
     public String bookPage(Model model){
-        model.addAttribute("books", books);
+        model.addAttribute("books", bookRepository.getBooks());
         return "book-create";
     }
 
+    @PostMapping("/save")
     @ResponseBody
-    @GetMapping("/all")
-    public ArrayList<BookDto> bookFormGet(@RequestParam(required = false) String title){
-        if(title!=null){
-            ArrayList<BookDto> searchBooks = new ArrayList<BookDto>();
-            for (BookDto book:books) {
-                if(book.getTitle().contains(title)) {
-                    searchBooks.add(book);
-                }
-            }
-            return searchBooks;
-        }
-        return books;
+    public ResponseEntity<BookDto> saveBook(@RequestBody  BookDto bookDto){
+        bookRepository.addBook(bookDto);
+        return  ResponseEntity.status(HttpStatus.OK).body(bookDto);
     }
 
 
-
+    @GetMapping("/search")
+    @ResponseBody
+    public ArrayList<BookDto> bookFormGet(@RequestParam(required = false) String title){
+        if(title!=null){
+           return bookRepository.searchBooks(title);
+        }
+        return bookRepository.getBooks();
+    }
 
 
 }

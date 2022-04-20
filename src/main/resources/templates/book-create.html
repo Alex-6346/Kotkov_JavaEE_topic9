@@ -1,4 +1,4 @@
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
     <title>Create book form</title>
       <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -7,20 +7,21 @@
   <body>
 
     <form id="saveBookForm">
-        isbn: <input name="isbn"  id="isbn" >
+        <label for="title">title:</label><input name="title" id="title" required>
         <br />
-        title:<input name="title"  id="title" >
+        <label for="isbn">isbn: </label><input name="isbn" id="isbn" required>
         <br />
-        author: <input name="author"  id="author" >
+        <label for="author">author: </label><input name="author" id="author" required>
         <br />
         <button type="submit" >Save</button>
     </form>
 
 
-    <form id="allBookForm">
-        title:<input name="title">
+    <form id="searchBookForm">
+        <label for="searchTitle">title:</label><input name="searchTitle" id ="searchTitle" required>
         <br />
         <button type="submit">Search</button>
+    </form>
 
         <table>
         <thead class="thead-dark">
@@ -38,9 +39,9 @@
         </tr>
         </tbody>
     </table>
-    </form>
 
 
-    <script src="index.js"/>
+
+    <script src="index.js"></script>
   </body>
 </html>

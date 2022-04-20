@@ -8,48 +8,66 @@
             url: '/book/save',
             dataType: 'json',
             data: JSON.stringify({
-                isbn: $(this).find('[name=isbn]').val(),
                 title: $(this).find('[name=title]').val(),
+                isbn: $(this).find('[name=isbn]').val(),
                 author: $(this).find('[name=author]').val()
             }),
             beforeSend: function(xhr) {
                 xhr.setRequestHeader('Content-Type', 'application/json')
             },
             success: function (response) {
-                if(response.message == "OK"){
-                    alert("ok");
+                    console.log(response);
                     updateBooksTable();
-
-                } else {
-                    alert("Some problem happened");
                 }
-            }
         });
     });
 
     function updateBooksTable() {
         $.ajax({
-            url: '/book/all',
+            url: '/book/search',
             success: function (response) {
-
                 fillBooksTable(response);
             }
         });
     }
 
-    function fillBooksTable(books) {
-        let tableContent = "";
-        for (let i = 0; i < books.length; ++i) {
-            tableContent += `
+
+})();
+
+
+(function(){
+    $('#searchBookForm').submit(function(e){
+        e.preventDefault();
+
+        $.ajax({
+            type: 'GET',
+            url: '/book/search',
+            dataType: 'json',
+            data: {
+                title: $("#searchTitle").val()
+            },
+                beforeSend: function(xhr) {
+                xhr.setRequestHeader('Content-Type', 'application/json')
+            },
+            success: function (response) {
+                console.log(response);
+                fillBooksTable(response);
+            }
+        });
+    });
+})();
+
+
+function fillBooksTable(books) {
+    let content = "";
+    for (let i = 0; i < books.length; ++i) {
+        content += `
         <tr th:each="book: ${books}">
             <td>${books[i].title}</td>
             <td>${books[i].isbn}</td>
             <td>${books[i].author}</td>
         </tr>
         `;
-        }
-
-        $("#tableBody").html(tableContent);
     }
-
-})();
+    $("#tableBody").html(content);
+}
