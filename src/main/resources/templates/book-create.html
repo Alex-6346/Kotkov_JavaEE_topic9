@@ -1,21 +1,46 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
     <title>Create book form</title>
+      <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   </head>
+
   <body>
-    <form method="post"  action="/book/create">
-        title:<input name="title">
+
+    <form id="saveBookForm">
+        isbn: <input name="isbn"  id="isbn" >
         <br />
-        isbn: <input name="isbn">
+        title:<input name="title"  id="title" >
         <br />
-        author: <input name="author">
+        author: <input name="author"  id="author" >
         <br />
-        <button type="submit">Save</button>
+        <button type="submit" >Save</button>
     </form>
 
-    <p>title: <span th:text="*{bookDto.title}"/></p>
-    <p>isbn: <span th:text="*{bookDto.isbn}"/></p>
-    <p>author: <span th:text="*{bookDto.author}"/></p>
- </body>
 
+    <form id="allBookForm">
+        title:<input name="title">
+        <br />
+        <button type="submit">Search</button>
+
+        <table>
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">Title</th>
+            <th scope="col">ISBN</th>
+            <th scope="col">Author</th>
+        </tr>
+        </thead>
+        <tbody id="tableBody">
+        <tr th:each="book: ${books}">
+            <td th:text="${book.title}"></td>
+            <td th:text="${book.isbn}"></td>
+            <td th:text="${book.author}"></td>
+        </tr>
+        </tbody>
+    </table>
+    </form>
+
+
+    <script src="index.js"/>
+  </body>
 </html>

@@ -3,10 +3,8 @@ package com.example.demo.controller;
 import com.example.demo.model.BookDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+
 
 import java.util.ArrayList;
 
@@ -16,21 +14,38 @@ public class BookController {
 
     ArrayList<BookDto> books = new ArrayList<BookDto>();
 
-    @GetMapping("/create")
-    public String bookFormGet(Model model){
-        BookDto bookDto= new BookDto();
-        model.addAttribute("bookDto",bookDto);
+    @RequestMapping(value ="/save", method=RequestMethod.POST)
+    @ResponseBody
+    public String saveBook(@RequestBody  BookDto bookDto){
+        books.add(bookDto);
+        System.out.println("added!");
+        return "{\"message\": \"OK\"}";
+    }
+
+
+    @GetMapping
+    public String bookPage(Model model){
+        model.addAttribute("books", books);
         return "book-create";
     }
 
-    @PostMapping("/create")
-    public String saveBook(BookDto bookDto,Model model){
-        books.add(bookDto);
-        model.addAttribute("bookDto",bookDto);
-        model.addAttribute("books", books);
-
-        return "book-list";
+    @ResponseBody
+    @GetMapping("/all")
+    public ArrayList<BookDto> bookFormGet(@RequestParam(required = false) String title){
+        if(title!=null){
+            ArrayList<BookDto> searchBooks = new ArrayList<BookDto>();
+            for (BookDto book:books) {
+                if(book.getTitle().contains(title)) {
+                    searchBooks.add(book);
+                }
+            }
+            return searchBooks;
+        }
+        return books;
     }
+
+
+
 
 
 }
