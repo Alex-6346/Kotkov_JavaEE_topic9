@@ -1,15 +1,15 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
-    <title>Create book form</title>
+    <title>Book search</title>
       <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   </head>
 
   <body>
 
     <form id="saveBookForm">
-        <label for="title">title:</label><input name="title" id="title" required>
-        <br />
         <label for="isbn">isbn: </label><input name="isbn" id="isbn" required>
+        <br />
+        <label for="title">title:</label><input name="title" id="title" required>
         <br />
         <label for="author">author: </label><input name="author" id="author" required>
         <br />
@@ -17,24 +17,37 @@
     </form>
 
 
-    <form id="searchBookForm">
-        <label for="searchTitle">title:</label><input name="searchTitle" id ="searchTitle" required>
+    <form id="searchBookByIsbnForm">
+        <label for="searchIsbn">isbn:  </label><input name="searchIsbn" id ="searchIsbn" required>
         <br />
-        <button type="submit">Search</button>
+        <button type="submit">Search by ISBN</button>
     </form>
+
+    <form id="searchBookByTitleForm">
+        <label for="searchTitle">title: </label><input name="searchTitle" id ="searchTitle" required>
+        <br />
+        <button type="submit">Search by title</button>
+    </form>
+
+    <form id="searchBookByAuthorForm">
+        <label for="searchAuthor">author:</label><input name="searchAuthor" id ="searchAuthor" required>
+        <br />
+        <button type="submit">Search by author</button>
+    </form>
+
 
         <table>
         <thead class="thead-dark">
         <tr>
-            <th scope="col">Title</th>
             <th scope="col">ISBN</th>
+            <th scope="col">Title</th>
             <th scope="col">Author</th>
         </tr>
         </thead>
         <tbody id="tableBody">
         <tr th:each="book: ${books}">
-            <td th:text="${book.title}"></td>
             <td th:text="${book.isbn}"></td>
+            <td th:text="${book.title}"></td>
             <td th:text="${book.author}"></td>
         </tr>
         </tbody>

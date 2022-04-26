@@ -36,7 +36,7 @@
 
 
 (function(){
-    $('#searchBookForm').submit(function(e){
+    $('#searchBookByIsbnForm').submit(function(e){
         e.preventDefault();
 
         $.ajax({
@@ -44,27 +44,88 @@
             url: '/book/search',
             dataType: 'json',
             data: {
-                title: $("#searchTitle").val()
+                isbn: $("#searchIsbn").val(),
+                query:"isbn"
             },
-                beforeSend: function(xhr) {
+            beforeSend: function(xhr) {
                 xhr.setRequestHeader('Content-Type', 'application/json')
             },
             success: function (response) {
-                console.log(response);
-                fillBooksTable(response);
+                if(response==0){
+                    alert("Book not found!");
+                }
+                else {
+                    console.log(response);
+                    fillBooksTable(response);
+                    window.location.assign("/book/" + $("#searchIsbn").val());
+                }
             }
         });
     });
 })();
 
+(function(){
+    $('#searchBookByTitleForm').submit(function(e){
+        e.preventDefault();
+
+        $.ajax({
+            type: 'GET',
+            url: '/book/search',
+            dataType: 'json',
+            data: {
+                title: $("#searchTitle").val(),
+                query:"title"
+            },
+                beforeSend: function(xhr) {
+                xhr.setRequestHeader('Content-Type', 'application/json')
+            },
+            success: function (response) {
+                if(response==0){
+                    alert("Books not found!");
+                }
+                else {
+                    console.log(response);
+                    fillBooksTable(response);
+                }
+            }
+        });
+    });
+})();
+
+(function(){
+    $('#searchBookByAuthorForm').submit(function(e){
+        e.preventDefault();
+
+        $.ajax({
+            type: 'GET',
+            url: '/book/search',
+            dataType: 'json',
+            data: {
+                author: $("#searchAuthor").val(),
+                query:"author"
+            },
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('Content-Type', 'application/json')
+            },
+            success: function (response) {
+                if (response == 0) {
+                    alert("Book not found!");
+                } else {
+                    console.log(response);
+                    fillBooksTable(response);
+                }
+            }
+        });
+    });
+})();
 
 function fillBooksTable(books) {
     let content = "";
     for (let i = 0; i < books.length; ++i) {
         content += `
         <tr th:each="book: ${books}">
-            <td>${books[i].title}</td>
             <td>${books[i].isbn}</td>
+            <td>${books[i].title}</td>
             <td>${books[i].author}</td>
         </tr>
         `;
