@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.model.BookDto;
+import com.example.demo.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +14,7 @@ import java.util.List;
 public class BookService {
 
 
-    private final EntityManager entityManager;
+    private final BookRepository bookRepository;
 
     @Transactional
     public BookDto createBook(String isbn, String title, String author) {
@@ -22,31 +23,29 @@ public class BookService {
         bookDto.setTitle(title);
         bookDto.setAuthor(author);
 
-        return entityManager.merge(bookDto);
+        return bookRepository.saveAndFlush(bookDto).orElse(null);
     }
 
 
     @Transactional
     public List<BookDto> getBooks(){
-        return entityManager.createQuery("SELECT b FROM books b", BookDto.class).getResultList();
+          return bookRepository.findAll();
     }
 
 
     @Transactional
     public BookDto getBookByIsbn(String isbn){
-        return entityManager.find(BookDto.class,isbn);
+        return bookRepository.findByIsbnIgnoreCase(isbn).orElse(null);
     }
 
     @Transactional
     public List<BookDto> getBooksByTitle(String title){
-        return entityManager.createQuery("SELECT b FROM books b WHERE b.title LIKE :query", BookDto.class)
-                .setParameter("query", "%"+title+"%").getResultList();
+          return bookRepository.findAllByTitleContainingIgnoreCase(title);
     }
 
     @Transactional
     public List<BookDto> getBooksByAuthor(String author){
-        return entityManager.createQuery("SELECT b FROM books b WHERE b.author LIKE :query", BookDto.class)
-                .setParameter("query", "%"+author+"%").getResultList();
+         return bookRepository.findAllByAuthorContainingIgnoreCase(author);
     }
 
 
