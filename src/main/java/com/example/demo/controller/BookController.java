@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.BookDto;
+import com.example.demo.entity.BookDto;
 import com.example.demo.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -52,6 +52,7 @@ public class BookController {
     @ResponseBody
     public ResponseEntity<BookDto> saveBook(@RequestBody  BookDto bookDto){
         bookService.createBook(bookDto.getIsbn(),bookDto.getTitle(),bookDto.getAuthor());
+        System.out.println("ok!1");
         return  ResponseEntity.status(HttpStatus.OK).body(bookDto);
     }
 

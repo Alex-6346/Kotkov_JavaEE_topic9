@@ -3,7 +3,7 @@ package com.example.demo.repository;
 import java.util.List;
 import java.util.Optional;
 
-import com.example.demo.model.BookDto;
+import com.example.demo.entity.BookDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface BookRepository extends JpaRepository<BookDto, Integer> {
@@ -13,8 +13,7 @@ public interface BookRepository extends JpaRepository<BookDto, Integer> {
     List<BookDto> findAllByAuthorContainingIgnoreCase(String author);
 
     List<BookDto> findAll();
-
-    Optional<BookDto> saveAndFlush(BookDto bookDto);
+    BookDto saveAndFlush(BookDto bookDto);
 
 
 }

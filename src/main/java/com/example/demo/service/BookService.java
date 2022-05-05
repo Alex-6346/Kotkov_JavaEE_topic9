@@ -1,11 +1,11 @@
 package com.example.demo.service;
 
-import com.example.demo.model.BookDto;
+import com.example.demo.entity.BookDto;
 import com.example.demo.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import javax.persistence.EntityManager;
+
 import java.util.List;
 
 
@@ -22,8 +22,8 @@ public class BookService {
         bookDto.setIsbn(isbn);
         bookDto.setTitle(title);
         bookDto.setAuthor(author);
-
-        return bookRepository.saveAndFlush(bookDto).orElse(null);
+        System.out.println("ok!2");
+        return bookRepository.saveAndFlush(bookDto);
     }
 
 
