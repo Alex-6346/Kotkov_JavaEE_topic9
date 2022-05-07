@@ -1,5 +1,5 @@
+//SAVE A BOOK
 (function(){
-
     $('#saveBookForm').submit(function(e){
         e.preventDefault();
 
@@ -31,10 +31,9 @@
         });
     }
 
-
 })();
 
-
+//SEARCH BOOKS
 (function(){
     $('#searchBookByIsbnForm').submit(function(e){
         e.preventDefault();
@@ -119,6 +118,46 @@
     });
 })();
 
+
+window.onload = addTolistOfFavouriteBooks();
+function addTolistOfFavouriteBooks() {
+//ADD BOOKS TO THE LIST OF FAVORITE
+    let table = document.getElementById('listOfBooksTableBody');
+    let rows = table.getElementsByTagName('tr');
+
+    for (const row of rows) {
+        const isbn = row.cells[0];
+        const title = row.cells[1];
+        const author = row.cells[2];
+        row.cells[3].addEventListener('click', function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: '/book/favourite-add',
+                dataType: 'json',
+                data: JSON.stringify({
+                    title: $(title).text(),
+                    isbn: $(isbn).text(),
+                    author: $(author).text()
+                }),
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Content-Type', 'application/json')
+                },
+                success: function (response) {
+                        console.log(response);
+                        alert("Book added to favourite!");
+
+                },
+                error: function(res){
+                    alert("Book is already added to favourite!");
+                }
+            })
+        })
+    }
+}
+
+
+
 function fillBooksTable(books) {
     let content = "";
     for (let i = 0; i < books.length; ++i) {
@@ -127,8 +166,10 @@ function fillBooksTable(books) {
             <td>${books[i].isbn}</td>
             <td>${books[i].title}</td>
             <td>${books[i].author}</td>
+            <td><button type="submit">Add as Favorite</button></td>
         </tr>
         `;
     }
-    $("#tableBody").html(content);
+    $("#listOfBooksTableBody").html(content);
+    addTolistOfFavouriteBooks();
 }

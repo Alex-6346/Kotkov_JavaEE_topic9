@@ -1,0 +1,33 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Book search</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+</head>
+
+<body>
+
+<table id="listOfFavouriteBooksTableBody">
+    <thead class="thead-dark">
+    <tr>
+        <th scope="col">ISBN</th>
+        <th scope="col">Title</th>
+        <th scope="col">Author</th>
+        <th scope="col" th:if="${#authorization.expression('hasAuthority(''VIEW_CATALOG'')')}">Favourite</th>
+    </tr>
+    </thead>
+    <tbody id="favouriteBooksTableBody">
+    <tr th:each="book: ${favouriteBooks}">
+        <td th:text="${book.isbn}"></td>
+        <td th:text="${book.title}"></td>
+        <td th:text="${book.author}"></td>
+        <td th:if="${#authorization.expression('hasAuthority(''VIEW_CATALOG'')')}"><button type="submit">Delete from Favourite</button></td>
+    </tr>
+    </tbody>
+</table>
+
+<button onclick="window.location='/book';">Return to main page</button>
+
+<script src="/book-favourite.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,23 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Register</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+</head>
+
+<body>
+
+<form th:if="${#authorization.expression('isAnonymous()')}" id="registerForm">
+    <label for="login">Login: </label><input name="login" id="login" required>
+    <br />
+    <label for="password">Password: </label><input name="password" id="password" required>
+    <br />
+    <label for="rPassword">Repeat password: </label><input name="rPassword" id="rPassword" required>
+    <br />
+    <button type="submit" >Register</button>
+</form>
+<a th:href="@{./book}" ><button>Continue as anonymous</button></a>
+
+<script  src="book-register.js"></script>
+</body>
+
+</html>

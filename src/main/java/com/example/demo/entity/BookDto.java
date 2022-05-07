@@ -2,18 +2,18 @@ package com.example.demo.entity;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-@Entity(name = "books")
+@Entity
+@Table(name = "books")
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
 public class BookDto {
     @Id
-    @Column(name = "isbn")
+    @Basic(optional = false)
+    @Column(name = "isbn",unique=true)
     private String isbn;
     @Column(name = "title")
     private String title;

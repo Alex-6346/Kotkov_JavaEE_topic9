@@ -27,7 +27,6 @@ public class BookController {
     }
 
 
-
     @GetMapping("/search")
     @ResponseBody
     public List<BookDto> bookFormGet(@RequestParam(required = false) String isbn,
@@ -52,8 +51,27 @@ public class BookController {
     @ResponseBody
     public ResponseEntity<BookDto> saveBook(@RequestBody  BookDto bookDto){
         bookService.createBook(bookDto.getIsbn(),bookDto.getTitle(),bookDto.getAuthor());
-        System.out.println("ok!1");
         return  ResponseEntity.status(HttpStatus.OK).body(bookDto);
+    }
+
+    @PostMapping("/favourite-add")
+    @ResponseBody
+    public BookDto addBookToFavourite(@RequestBody  BookDto bookDto){
+        return  bookService.addBookToFavourite(bookDto);
+    }
+
+    @PostMapping("/favourite-delete")
+    @ResponseBody
+    public BookDto deleteBookFromFavourite(@RequestBody  BookDto bookDto){
+        return  bookService.deleteBookFromFavourite(bookDto);
+    }
+
+    @GetMapping("/favourite-list")
+    public String favouritePage(Model model){
+        List<BookDto> favouriteBooks = bookService.getFavouriteBooks();
+        System.out.println(favouriteBooks);
+        model.addAttribute("favouriteBooks",favouriteBooks);
+        return "book-favourite";
     }
 
     @GetMapping("/{isbn}")

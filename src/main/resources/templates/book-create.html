@@ -5,8 +5,14 @@
   </head>
 
   <body>
+  <a th:href="@{/logout}" th:if="${#authorization.expression('isAuthenticated()')}"><button>Log out</button></a>
+  <a th:href="@{/login}" th:if="${#authorization.expression('isAnonymous()')}"><button>Log in</button></a>
+  <a th:href="@{./register}" th:if="${#authorization.expression('isAnonymous()')}"><button>Register</button></a>
+  <button onclick="window.location='/book/favourite-list';" th:if="${#authorization.expression('hasAuthority(''VIEW_CATALOG'')')}">
+      View favourite books
+  </button>
 
-    <form id="saveBookForm">
+    <form th:if="${#authorization.expression('hasAuthority(''VIEW_ADMIN'')')}" id="saveBookForm">
         <label for="isbn">isbn: </label><input name="isbn" id="isbn" required>
         <br />
         <label for="title">title:</label><input name="title" id="title" required>
@@ -42,19 +48,21 @@
             <th scope="col">ISBN</th>
             <th scope="col">Title</th>
             <th scope="col">Author</th>
+            <th scope="col" th:if="${#authorization.expression('hasAuthority(''VIEW_CATALOG'')')}">Favourite</th>
         </tr>
         </thead>
-        <tbody id="tableBody">
-        <tr th:each="book: ${books}">
-            <td th:text="${book.isbn}"></td>
-            <td th:text="${book.title}"></td>
-            <td th:text="${book.author}"></td>
+        <tbody id="listOfBooksTableBody">
+        <tr  th:each="book: ${books}">
+            <td name="bookListIsbn"   th:text="${book.isbn}"></td>
+            <td name="bookListTitle"  th:text="${book.title}"></td>
+            <td name="bookListAuthor" th:text="${book.author}"></td>
+            <td th:if="${#authorization.expression('hasAuthority(''VIEW_CATALOG'')')}"><button type="submit">Add as Favourite</button></td>
         </tr>
         </tbody>
     </table>
 
 
 
-    <script src="index.js"></script>
+    <script src="book-create.js"></script>
   </body>
 </html>

@@ -10,10 +10,12 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import java.util.stream.Collectors;
 import java.util.List;
 
+@Service
 @RequiredArgsConstructor
 public class MyUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
@@ -35,6 +37,17 @@ public class MyUserDetailsService implements UserDetailsService {
                 .map(Enum::name)
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toUnmodifiableList());
+    }
+
+    public UserEntity registerUser(UserEntity user){
+        final UserEntity sameUser = userRepository.findByLogin(user.getLogin()).orElse(null);
+        if(sameUser==null){
+            userRepository.saveAndFlush(user);
+            return user;
+        }
+        else{
+            return null;
+        }
     }
 }
 

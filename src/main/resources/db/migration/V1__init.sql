@@ -1,8 +1,10 @@
+
+
 create table users
 (
     id       int primary key auto_increment,
     login    varchar(30) not null,
-    password varchar(40) not null,
+    password varchar(60) not null,
     unique uniq_login (login)
 );
 
@@ -19,6 +21,8 @@ create table user_to_permissions (
                                      constraint fk_user_to_permission_user foreign key (user_id) references users(id),
                                      constraint fk_user_to_permission_permission foreign key (permission_id) references permissions(id)
 );
+
+
 
 insert into users (login, password) values
 ('admin', 'password'),
