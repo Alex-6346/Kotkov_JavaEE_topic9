@@ -13,12 +13,10 @@ public class MyPasswordEncoder implements PasswordEncoder {
     @Autowired
     private UserRepository userRepository;
 
-    String salt = BCrypt.gensalt(10);
-
     @Override
     public String encode(final CharSequence rawPassword) {
-        userRepository.encodePasswords(BCrypt.hashpw("password",salt));
-        return BCrypt.hashpw(rawPassword.toString(),salt);
+        userRepository.encodePasswords(BCrypt.hashpw("password",SaltStorage.SALT));
+        return BCrypt.hashpw(rawPassword.toString(),SaltStorage.SALT);
     }
 
     @Override

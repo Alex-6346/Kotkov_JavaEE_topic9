@@ -1,6 +1,7 @@
 package com.example.demo.repository;
 
 import com.example.demo.entity.BookDto;
+import com.example.demo.entity.PermissionEntity;
 import com.example.demo.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -23,6 +24,10 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
             "SET user.password = :encodedPassword " +
             "WHERE user.password='password'")
     void encodePasswords(@Param("encodedPassword") String encodedPassword);
+
+    @Query("SELECT per FROM PermissionEntity per "
+            + "WHERE per.permission ='VIEW_CATALOG'")
+    Optional<PermissionEntity> viewCatalogPermission();
 
     UserEntity saveAndFlush(UserEntity user);
 }

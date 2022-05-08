@@ -1,23 +1,30 @@
 package com.example.demo.service;
 
+import com.example.demo.config.MyPasswordEncoder;
+import com.example.demo.config.SaltStorage;
 import com.example.demo.entity.PermissionEntity;
 import com.example.demo.entity.UserEntity;
 import com.example.demo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.service.spi.InjectService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+
 
 import java.util.stream.Collectors;
 import java.util.List;
 
-@Service
+
 @RequiredArgsConstructor
 public class MyUserDetailsService implements UserDetailsService {
+    @Autowired
     private final UserRepository userRepository;
 
     @Override
@@ -39,15 +46,6 @@ public class MyUserDetailsService implements UserDetailsService {
                 .collect(Collectors.toUnmodifiableList());
     }
 
-    public UserEntity registerUser(UserEntity user){
-        final UserEntity sameUser = userRepository.findByLogin(user.getLogin()).orElse(null);
-        if(sameUser==null){
-            userRepository.saveAndFlush(user);
-            return user;
-        }
-        else{
-            return null;
-        }
-    }
+
 }
 

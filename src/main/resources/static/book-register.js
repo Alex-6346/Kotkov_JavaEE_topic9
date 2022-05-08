@@ -1,4 +1,4 @@
-(function(){
+$(function(){
     $('#registerForm').submit(function(e){
         e.preventDefault();
 
