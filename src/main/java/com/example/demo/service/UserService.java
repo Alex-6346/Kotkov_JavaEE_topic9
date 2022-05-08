@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.config.SaltStorage;
 import com.example.demo.entity.PermissionEntity;
+import com.example.demo.entity.UserDto;
 import com.example.demo.entity.UserEntity;
 import com.example.demo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,16 +17,15 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public UserEntity registerUser(UserEntity user) {
-        user.setPassword(BCrypt.hashpw(user.getPassword(), SaltStorage.SALT));
+    public UserEntity registerUser(UserDto user) {
         PermissionEntity permission = userRepository.viewCatalogPermission().orElse(null);
-        user.setPermissions(Arrays.asList(permission));
-        user.setFavouriteBooks(Arrays.asList());
+        UserEntity newUser = new UserEntity(user.getLogin(),"temp",Arrays.asList(permission),Arrays.asList());
+        newUser.setPassword(BCrypt.hashpw(user.getPassword(), SaltStorage.SALT));
 
         UserEntity sameUser = userRepository.findByLogin(user.getLogin()).orElse(null);
         if (sameUser == null) {
-            userRepository.saveAndFlush(user);
-            return user;
+            userRepository.saveAndFlush(newUser);
+            return newUser;
         } else {
             return null;
         }

@@ -1,6 +1,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
     <title>Book search</title>
+      <link rel="stylesheet" href="css/common.css">
       <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   </head>
 
@@ -13,6 +14,7 @@
   </button>
 
     <form th:if="${#authorization.expression('hasAuthority(''VIEW_ADMIN'')')}" id="saveBookForm">
+        <h3>Save book:</h3>
         <label for="isbn">isbn: </label><input name="isbn" id="isbn" required>
         <br />
         <label for="title">title:</label><input name="title" id="title" required>
@@ -22,7 +24,7 @@
         <button type="submit" >Save</button>
     </form>
 
-
+    <h3>Search book:</h3>
     <form id="searchBookByIsbnForm">
         <label for="searchIsbn">isbn:  </label><input name="searchIsbn" id ="searchIsbn" required>
         <br />
@@ -53,9 +55,9 @@
         </thead>
         <tbody id="listOfBooksTableBody">
         <tr  th:each="book: ${books}">
-            <td name="bookListIsbn"   th:text="${book.isbn}"></td>
-            <td name="bookListTitle"  th:text="${book.title}"></td>
-            <td name="bookListAuthor" th:text="${book.author}"></td>
+            <td  th:text="${book.isbn}"></td>
+            <td  th:text="${book.title}"></td>
+            <td  th:text="${book.author}"></td>
             <td th:if="${#authorization.expression('hasAuthority(''VIEW_CATALOG'')')}"><button type="submit">Add as Favourite</button></td>
         </tr>
         </tbody>

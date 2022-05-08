@@ -18,7 +18,10 @@
             success: function (response) {
                     console.log(response);
                     updateBooksTable();
-                }
+                },
+            error: function () {
+                console.log("Error creating a book!");
+            }
         });
     });
 
@@ -119,7 +122,7 @@
 })();
 
 
-window.onload = addTolistOfFavouriteBooks();
+window.onload = addTolistOfFavouriteBooks;
 function addTolistOfFavouriteBooks() {
 //ADD BOOKS TO THE LIST OF FAVORITE
     let table = document.getElementById('listOfBooksTableBody');
@@ -148,7 +151,7 @@ function addTolistOfFavouriteBooks() {
                         alert("Book added to favourite!");
 
                 },
-                error: function(res){
+                error: function(){
                     alert("Book is already added to favourite!");
                 }
             })

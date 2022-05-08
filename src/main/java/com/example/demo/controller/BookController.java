@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
 
@@ -49,14 +50,14 @@ public class BookController {
 
     @PostMapping("/save")
     @ResponseBody
-    public ResponseEntity<BookDto> saveBook(@RequestBody  BookDto bookDto){
+    public ResponseEntity<BookDto> saveBook(@Valid @RequestBody  BookDto bookDto){
         bookService.createBook(bookDto.getIsbn(),bookDto.getTitle(),bookDto.getAuthor());
         return  ResponseEntity.status(HttpStatus.OK).body(bookDto);
     }
 
     @PostMapping("/favourite-add")
     @ResponseBody
-    public BookDto addBookToFavourite(@RequestBody  BookDto bookDto){
+    public BookDto addBookToFavourite( @RequestBody  BookDto bookDto){
         return  bookService.addBookToFavourite(bookDto);
     }
 

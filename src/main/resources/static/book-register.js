@@ -2,6 +2,11 @@ $(function(){
     $('#registerForm').submit(function(e){
         e.preventDefault();
 
+        if ($('#password').val() !== $('#rPassword').val()) {
+            alert('Passwords are not matching!');
+            return;
+        }
+
         $.ajax({
             type: 'POST',
             url: '/register',
@@ -17,8 +22,8 @@ $(function(){
                 alert("User registered!");
                 console.log(response);
             },
-            error:function (err){
-                alert("Such user already exists!");
+            error:function (){
+                alert("Error in registering user!");
             }
         })
 

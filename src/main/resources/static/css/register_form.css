@@ -1,0 +1,16 @@
+#parent {
+    display: table;
+    text-align: center;
+    vertical-align: middle;
+    width: fit-content;
+    margin-left:40%;
+}
+#registerForm{
+    border:2px solid black;
+    display: table-cell;
+    text-align: right;
+    padding: 15px;
+}
+button{
+    margin:10px;
+}
